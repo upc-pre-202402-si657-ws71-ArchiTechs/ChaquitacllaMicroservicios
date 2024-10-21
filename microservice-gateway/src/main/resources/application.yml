@@ -19,6 +19,12 @@ spring:
             - Path=/api/v1/sowings/**
           filters:
             - StripPrefix=1
+        - id: msvc-foroum
+          uri: lb://MICROSERVICE-FOROUM
+          predicates:
+            - Path=/api/v1/foroum/**
+          filters:
+            - StripPrefix=1
   config:
     import: 'optional:configserver:http://localhost:8888'
 
