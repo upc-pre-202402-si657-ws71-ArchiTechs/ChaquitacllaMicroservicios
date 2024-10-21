@@ -23,6 +23,7 @@
     <module>microservice-eureka</module>
     <module>microservice-crops</module>
     <module>microservice-sowings</module>
+    <module>microservice-foroum</module>
   </modules>
 
   <properties>

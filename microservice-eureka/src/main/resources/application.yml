@@ -17,6 +17,3 @@ eureka:
       defaultZone: http://localhost:${server.port}/eureka/
   server:
     renewal-percent-threshold: 0.85
-  instance:
-    lease-renewal-interval-in-seconds: 10
-    lease-expiration-duration-in-seconds: 30
