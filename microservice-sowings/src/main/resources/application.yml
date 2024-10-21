@@ -10,7 +10,7 @@ spring:
     hibernate:
       ddl-auto: update
       naming:
-        physical-strategy: com.chaquitaclla.microservice.sowings.shared.infrastructure.persistence.jpa.configuration.strategy.SnakeCaseNameStrat
+        physical-strategy: com.chaquitaclla.microservice.products.shared.infrastructure.persistence.jpa.configuration.strategy.SnakeCaseNameStrat
     open-in-view: true
     properties:
       hibernate:

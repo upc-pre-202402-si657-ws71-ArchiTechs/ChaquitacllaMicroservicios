@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.chaquitaclla</groupId>
-	<artifactId>microservice-sowings</artifactId>
+	<artifactId>microservice-products</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>microservice-sowings</name>
 	<description>microservice-sowings Spring Boot</description>
