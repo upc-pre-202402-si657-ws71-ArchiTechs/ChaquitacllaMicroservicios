@@ -25,6 +25,12 @@ spring:
             - Path=/api/v1/foroum/**
           filters:
             - StripPrefix=1
+        - id: msvc-profiles
+          uri: lb://MICROSERVICE-PROFILES
+          predicates:
+            - Path=/api/v1/profiles/**
+          filters:
+            - StripPrefix=1
   config:
     import: 'optional:configserver:http://localhost:8888'
 

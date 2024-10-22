@@ -20,6 +20,8 @@ public class MicroserviceGatewayApplication {
 						.uri("lb://MICROSERVICE-CROPS"))
 				.route("msvc-sowings", r -> r.path("/api/v1/sowings/**")
 						.uri("lb://MICROSERVICE-SOWINGS"))
+				.route("msvc-profiles", r -> r.path("/api/v1/profiles/**")
+						.uri("lb://MICROSERVICE-PROFILES"))
 				.build();
 	}
 }

@@ -1,16 +1,16 @@
 spring:
   application:
-    name: microservice-crops
+    name: microservice-profiles
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cropsdb
+    url: jdbc:mysql://localhost:3306/profilesdb
     username: root
     password: root
   jpa:
     hibernate:
       ddl-auto: update
       naming:
-        physical-strategy: com.microservice.crops.shared.infrastructure.persistence.jpa.configuration.strategy.SnakeCaseNameStrat
+        physical-strategy: com.microservice.profiles.shared.infrastructure.persistence.jpa.configuration.strategy.SnakeCaseNameStrat
     open-in-view: true
     properties:
       hibernate:
@@ -28,4 +28,4 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 server:
-  port: 8081
+  port: 8086
