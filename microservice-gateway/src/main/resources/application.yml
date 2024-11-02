@@ -1,6 +1,15 @@
 spring:
   application:
     name: msvc-gateway
+  datasource:
+    url: jdbc:mysql://localhost:3306/jwt
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
   cloud:
     gateway:
       discovery:
@@ -22,7 +31,7 @@ spring:
         - id: msvc-foroum
           uri: lb://MICROSERVICE-FOROUM
           predicates:
-            - Path=/api/v1/foroum/**
+            - Path=/api/v1/forum/**
           filters:
             - StripPrefix=1
         - id: msvc-profiles
@@ -33,7 +42,8 @@ spring:
             - StripPrefix=1
   config:
     import: 'optional:configserver:http://localhost:8888'
-
-
 server:
   port: 8082
+
+
+

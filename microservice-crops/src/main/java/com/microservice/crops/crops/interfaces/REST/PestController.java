@@ -10,6 +10,7 @@ import com.microservice.crops.crops.infrastructure.persistence.jpa.repositories.
 import com.microservice.crops.crops.interfaces.REST.resources.CreatePestResource;
 import com.microservice.crops.crops.interfaces.REST.resources.PestResource;
 import com.microservice.crops.crops.interfaces.REST.transform.PestResourceFromEntityAssembler;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/crops/pests")
-//@Tag(name = "Pests", description = "Pests Management Endpoints")
+@Tag(name = "Pests", description = "Pests Management Endpoints")
 public class PestController {
 
     private final PestCommandService pestCommandService;

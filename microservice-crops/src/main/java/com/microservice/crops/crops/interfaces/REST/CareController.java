@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/cares")
+@RequestMapping("/api/v1/crops/cares")
 //@Tag(name = "Cares", description = "Cares Management Endpoints")
 public class CareController {
 
