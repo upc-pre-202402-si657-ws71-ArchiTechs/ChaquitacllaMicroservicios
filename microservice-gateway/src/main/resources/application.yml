@@ -1,5 +1,39 @@
 spring:
   application:
     name: msvc-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: msvc-crops
+          uri: lb://MICROSERVICE-CROPS
+          predicates:
+            - Path=/api/v1/crops/**
+          filters:
+            - StripPrefix=1
+        - id: msvc-sowings
+          uri: lb://MICROSERVICE-SOWINGS
+          predicates:
+            - Path=/api/v1/sowings/**
+          filters:
+            - StripPrefix=1
+        - id: msvc-foroum
+          uri: lb://MICROSERVICE-FOROUM
+          predicates:
+            - Path=/api/v1/foroum/**
+          filters:
+            - StripPrefix=1
+        - id: msvc-profiles
+          uri: lb://MICROSERVICE-PROFILES
+          predicates:
+            - Path=/api/v1/profiles/**
+          filters:
+            - StripPrefix=1
   config:
     import: 'optional:configserver:http://localhost:8888'
+
+
+server:
+  port: 8082
