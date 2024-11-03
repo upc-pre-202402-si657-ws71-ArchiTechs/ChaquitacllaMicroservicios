@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
+import com.microservice.gateway.config.RateLimiterConfig;
+import com.microservice.gateway.config.RateLimiterGatewayFilter;
 
 @SpringBootApplication
 public class MicroserviceGatewayApplication {
@@ -14,15 +16,21 @@ public class MicroserviceGatewayApplication {
 	}
 
 	@Bean
-	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+	public RouteLocator customRouteLocator(RouteLocatorBuilder builder, RateLimiterConfig rateLimiterConfig) {
+		RateLimiterGatewayFilter rateLimiterFilter = new RateLimiterGatewayFilter(rateLimiterConfig.ipKeyResolver());
+
 		return builder.routes()
 				.route("msvc-crops", r -> r.path("/api/v1/crops/**")
+						.filters(f -> f.filter(rateLimiterFilter))
 						.uri("lb://MICROSERVICE-CROPS"))
 				.route("msvc-sowings", r -> r.path("/api/v1/sowings/**")
+						.filters(f -> f.filter(rateLimiterFilter))
 						.uri("lb://MICROSERVICE-SOWINGS"))
 				.route("msvc-profiles", r -> r.path("/api/v1/profiles/**")
+						.filters(f -> f.filter(rateLimiterFilter))
 						.uri("lb://MICROSERVICE-PROFILES"))
 				.route("msvc-foroum", r -> r.path("/api/v1/forum/**")
+						.filters(f -> f.filter(rateLimiterFilter))
 						.uri("lb://MICROSERVICE-FOROUM"))
 				.build();
 	}
