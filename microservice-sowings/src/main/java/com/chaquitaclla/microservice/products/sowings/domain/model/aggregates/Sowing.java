@@ -1,7 +1,6 @@
 package com.chaquitaclla.microservice.products.sowings.domain.model.aggregates;
 
 import com.chaquitaclla.microservice.products.products.domain.model.aggregates.Product;
-import com.chaquitaclla.microservice.products.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import com.chaquitaclla.microservice.products.shared.domain.model.valueobjects.DateRange;
 import com.chaquitaclla.microservice.products.sowings.domain.model.entities.SowingControl;
 import com.chaquitaclla.microservice.products.sowings.domain.model.valueobjects.CropId;
@@ -11,13 +10,19 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Setter
 @Entity
-public class Sowing extends AuditableAbstractAggregateRoot<Sowing> {
+@EntityListeners(AuditingEntityListener.class)
+public class Sowing {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +55,13 @@ public class Sowing extends AuditableAbstractAggregateRoot<Sowing> {
     @Getter
     private PhenologicalPhase phenologicalPhase;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private Date createdAt;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private Date updatedAt;
 
     public CropId getCropId() {
         return cropId;
@@ -58,18 +70,20 @@ public class Sowing extends AuditableAbstractAggregateRoot<Sowing> {
     public ProfileId getProfileId() {
         return profileId;
     }
-    protected Sowing() {
 
+    protected Sowing() {
     }
-    public Sowing(CropId cropId,Integer areaLand){
+
+    public Sowing(CropId cropId, Integer areaLand) {
         LocalDate startDate = LocalDate.now();
         this.dateRange = new DateRange(startDate, 6);
         this.areaLand = areaLand;
         this.cropId = cropId;
         this.phenologicalPhase = PhenologicalPhase.GERMINATION;
         this.profileId = new ProfileId(0L);
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
     }
-
 
     public void addSowingControl(SowingControl sowingControl) {
         if (sowingControls == null) {
@@ -79,10 +93,11 @@ public class Sowing extends AuditableAbstractAggregateRoot<Sowing> {
         sowingControl.setSowing(this);
     }
 
-    public void germinationPhase(){
+    public void germinationPhase() {
         this.phenologicalPhase = PhenologicalPhase.GERMINATION;
     }
-    public void harvestingPhase(){
+
+    public void harvestingPhase() {
         this.phenologicalPhase = PhenologicalPhase.HARVEST_READY;
     }
 }
