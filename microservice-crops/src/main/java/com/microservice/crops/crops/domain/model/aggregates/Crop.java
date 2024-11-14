@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,11 +50,19 @@ public class Crop extends AuditableAbstractAggregateRoot<Crop> {
             joinColumns = @JoinColumn(name = "crop_id"),
             inverseJoinColumns = @JoinColumn(name = "care_id"))
     private List<Care> cares = new ArrayList<>();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Date createdAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at", nullable = false)
+    private Date updatedAt;
+
     public Crop(){
         diseases = new ArrayList<>();
         pests = new ArrayList<>();
     }
-
 
     public Crop(String name, String description, String imageUrl, List<Disease> diseases, List<Pest> pests, List<Care> cares) {
         this();
@@ -63,6 +72,17 @@ public class Crop extends AuditableAbstractAggregateRoot<Crop> {
         this.diseases = diseases != null ? diseases : new ArrayList<>();
         this.pests = pests != null ? pests : new ArrayList<>();
         this.cares = cares != null ? cares : new ArrayList<>();
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
     }
 
     public Crop addDisease(Disease disease) {
@@ -101,7 +121,7 @@ public class Crop extends AuditableAbstractAggregateRoot<Crop> {
     }
 
     public List<Long> getDiseaseIds() {
-          return diseases.stream().map(Disease::getId).collect(Collectors.toList());
+        return diseases.stream().map(Disease::getId).collect(Collectors.toList());
     }
 
     public List<Long> getPestIds() {

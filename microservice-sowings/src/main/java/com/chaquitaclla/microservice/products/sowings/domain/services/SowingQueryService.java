@@ -5,6 +5,7 @@ import com.chaquitaclla.microservice.products.sowings.domain.model.aggregates.So
 import com.chaquitaclla.microservice.products.sowings.domain.model.queries.GetAllSowingsQuery;
 import com.chaquitaclla.microservice.products.sowings.domain.model.queries.GetSowingByIdQuery;
 import com.chaquitaclla.microservice.products.sowings.domain.model.queries.GetSowingsByPhenologicalPhaseQuery;
+import com.chaquitaclla.microservice.products.sowings.http.response.CropByIdResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +14,5 @@ public interface SowingQueryService {
     List<Sowing> handle(GetAllSowingsQuery query);
     Optional<Sowing> handle(GetSowingByIdQuery query);
     List<Sowing> handle(GetSowingsByPhenologicalPhaseQuery query);
+    CropByIdResponse findCropById(Long id);
 }

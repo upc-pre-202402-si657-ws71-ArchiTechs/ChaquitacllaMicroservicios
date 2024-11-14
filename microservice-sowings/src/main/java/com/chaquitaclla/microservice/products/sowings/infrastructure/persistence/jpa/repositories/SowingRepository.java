@@ -11,5 +11,4 @@ import java.util.Optional;
 public interface SowingRepository extends JpaRepository<Sowing, Long>{
     List<Sowing> findByPhenologicalPhase(PhenologicalPhase phase);
     Optional<Sowing> findById(Long id);
-
 }

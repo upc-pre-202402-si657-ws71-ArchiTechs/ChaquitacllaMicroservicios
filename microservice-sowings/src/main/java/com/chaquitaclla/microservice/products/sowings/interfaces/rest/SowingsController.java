@@ -61,6 +61,10 @@ public class SowingsController {
 
         return new ResponseEntity<>(sowingResourceCreated, HttpStatus.CREATED);
     }
+    @GetMapping("/look-crop/{cropId}")
+    public ResponseEntity<?> findCropById(@PathVariable Long cropId) {
+        return ResponseEntity.ok(sowingQueryService.findCropById(cropId));
+    }
     @GetMapping()
     public ResponseEntity<List<SowingResource>> getAllSowings(){
         var getAllSowingsQuery = new GetAllSowingsQuery();

@@ -6,7 +6,10 @@ import com.chaquitaclla.microservice.products.sowings.domain.model.commands.Dele
 import com.chaquitaclla.microservice.products.sowings.domain.model.commands.UpdateSowingCommand;
 import com.chaquitaclla.microservice.products.sowings.domain.model.valueobjects.CropId;
 import com.chaquitaclla.microservice.products.sowings.domain.services.SowingCommandService;
+import com.chaquitaclla.microservice.products.sowings.domain.services.SowingQueryService;
+import com.chaquitaclla.microservice.products.sowings.http.response.CropByIdResponse;
 import com.chaquitaclla.microservice.products.sowings.infrastructure.persistence.jpa.repositories.SowingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,15 +17,22 @@ import java.util.Optional;
 @Service
 public class SowingCommandServiceImpl implements SowingCommandService {
     private final SowingRepository sowingRepository;
+    private final SowingQueryService sowingQueryService;
 
-    public SowingCommandServiceImpl(SowingRepository sowingRepository) {
+    @Autowired
+    public SowingCommandServiceImpl(SowingRepository sowingRepository, SowingQueryService sowingQueryService) {
         this.sowingRepository = sowingRepository;
+        this.sowingQueryService = sowingQueryService;
     }
 
     @Override
     public Long handle(CreateSowingCommand command) {
-        var cropId = new CropId(Long.valueOf(command.cropId()));
+        CropByIdResponse cropResponse = sowingQueryService.findCropById(Long.valueOf(command.cropId()));
+        if (cropResponse == null) {
+            throw new IllegalArgumentException("The crop with the given ID does not exist.");
+        }
 
+        var cropId = new CropId(Long.valueOf(command.cropId()));
         var sowing = new Sowing(cropId, command.areaLand());
         sowingRepository.save(sowing);
         return sowing.getId();

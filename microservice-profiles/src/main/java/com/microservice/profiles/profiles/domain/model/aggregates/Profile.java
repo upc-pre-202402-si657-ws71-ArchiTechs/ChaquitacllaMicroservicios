@@ -1,6 +1,7 @@
 package com.microservice.profiles.profiles.domain.model.aggregates;
 
 import jakarta.persistence.*;
+import java.util.Date;
 import com.microservice.profiles.profiles.domain.model.commands.CreateProfileCommand;
 import com.microservice.profiles.profiles.domain.model.valueobjects.EmailAddress;
 import com.microservice.profiles.profiles.domain.model.valueobjects.PersonName;
@@ -33,6 +34,14 @@ public class Profile extends AuditableAbstractAggregateRoot<Profile> {
           @AttributeOverride(name = "country", column = @Column(name = "address_country"))})
   private StreetAddress address;
 
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "created_at", nullable = false, updatable = false)
+  private Date createdAt;
+
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "updated_at", nullable = false)
+  private Date updatedAt;
+
   public Profile(String firstName, String lastName, String username, String email, String street, String number, String city, String postalCode, String country) {
     this.name = new PersonName(firstName, lastName);
     this.username = new Username(username);
@@ -48,6 +57,17 @@ public class Profile extends AuditableAbstractAggregateRoot<Profile> {
   }
 
   public Profile() {
+  }
+
+  @PrePersist
+  protected void onCreate() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    this.updatedAt = new Date();
   }
 
   public void updateName(String firstName, String lastName) {
